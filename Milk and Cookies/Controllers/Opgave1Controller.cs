@@ -10,7 +10,7 @@ namespace Milk_and_Cookies.Controllers
 
 
 		[HttpGet("GetFavoriteMilkshakeFromCookie")]
-		public async Task<ActionResult<String>> GetFavoriteMilkshake()
+		public ActionResult<string> GetFavoriteMilkshakeFromCookie()
 		{
 			if (Request.Cookies["testCookie"] != null)
 			{
@@ -20,19 +20,19 @@ namespace Milk_and_Cookies.Controllers
 		}
 
 		[HttpGet("GetFavoriteMilkshake")]
-		public async Task<ActionResult<String>> GetFavoriteMilkshake(string favMilkshake)
+		public ActionResult<string> GetFavoriteMilkshake(string favMilkshake)
 		{
 			try
 			{
 				CookieOptions options = new CookieOptions();
-				options.MaxAge = TimeSpan.FromHours(1);
-				Response.Cookies.Append("testCookie", favMilkshake, options);
+				options.MaxAge = TimeSpan.FromMinutes(5);  // set cookie expire age after 5 minutes
+				Response.Cookies.Append("testCookie", favMilkshake, options); // create the cookie
 				return Ok(favMilkshake);
 
 			}
-			catch (Exception ex)
+			catch (Exception ex) 
 			{
-
+				Response.StatusCode = 404;
 				return BadRequest("exception caught: " + ex.Message);
 			}
 		}
